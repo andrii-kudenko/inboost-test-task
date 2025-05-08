@@ -2,13 +2,9 @@ import ReactFlow, {
     Background,
     Controls,
     MiniMap,
-    type OnNodesChange,
-    type OnEdgesChange,
-    type OnConnect,
     addEdge,
     type Node,
     type Connection,
-    type Edge,
     applyNodeChanges,
     applyEdgeChanges,
 } from "reactflow";
@@ -17,15 +13,10 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addNode, setNodes } from "../store/nodesSlice";
 import { setEdges } from "../store/edgesSlice";
 import { v4 as uuidv4 } from "uuid";
-import { connect } from "react-redux";
-import TaskNode from "./TaskNode";
 import { selectNode } from "../store/uiSlice";
 import Sidebar from "./Sidebar";
 import { useLocalStorageSync } from "../hooks/useLocalStorageSync";
-
-const nodeTypes = {
-    task: TaskNode,
-};
+import { nodeTypes } from "../types/NodeType";
 
 const Canvas = () => {
     useLocalStorageSync(); // Sync with local storage
