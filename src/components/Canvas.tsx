@@ -64,10 +64,10 @@ const Canvas = () => {
                     console.log("Node changes:", changes);
                     console.log("Current nodes:", nodes);
                     dispatch(setNodes(applyNodeChanges(changes, nodes)));
-                }} // We'll refine this
+                }}
                 onEdgesChange={(changes) =>
                     dispatch(setEdges(applyEdgeChanges(changes, edges)))
-                } // We'll refine this
+                }
                 onConnect={(connection: Connection) => {
                     const newEdge = addEdge(connection, edges);
                     dispatch(setEdges(newEdge));

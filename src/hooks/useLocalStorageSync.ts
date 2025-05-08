@@ -11,7 +11,7 @@ export const useLocalStorageSync = () => {
     const nodes = useAppSelector((state) => state.nodes);
     const edges = useAppSelector((state) => state.edges);
 
-    const [hasLoaded, setHasLoaded] = useState(false); // ✅
+    const [hasLoaded, setHasLoaded] = useState(false);
 
     // Load once on startup
     useEffect(() => {
@@ -29,10 +29,9 @@ export const useLocalStorageSync = () => {
                 console.warn("Failed to parse saved flow state:", err);
             }
         }
-        setHasLoaded(true); // ✅ set only after load
+        setHasLoaded(true); // set only after load
     }, [dispatch]);
 
-    // Save whenever data changes — but only *after* we have loaded once
     useEffect(() => {
         if (!hasLoaded) return;
         const toSave = JSON.stringify({ nodes, edges });

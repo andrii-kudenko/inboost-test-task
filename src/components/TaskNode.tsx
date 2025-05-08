@@ -32,17 +32,6 @@ const TaskNode = memo(({ id, data }: NodeProps) => {
         }
     };
 
-    // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     dispatch(
-    //         updateNode({
-    //             id,
-    //             type: "default",
-    //             position: data.position,
-    //             data: { label: e.target.value },
-    //         })
-    //     );
-    // };
-
     return (
         <div className="bg-white border rounded shadow p-2 w-40 text-sm text-gray-700">
             {isEditing ? (
