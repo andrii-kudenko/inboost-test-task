@@ -12,8 +12,15 @@ export const edgesSlice = createSlice({
         addEdge: (state, action: PayloadAction<Edge>) => {
             state.push(action.payload);
         },
+        removeEdgesForNode: (state, action: PayloadAction<string>) => {
+            return state.filter(
+                (edge) =>
+                    edge.source !== action.payload &&
+                    edge.target !== action.payload
+            );
+        },
     },
 });
 
-export const { setEdges, addEdge } = edgesSlice.actions;
+export const { setEdges, addEdge, removeEdgesForNode } = edgesSlice.actions;
 export default edgesSlice.reducer;

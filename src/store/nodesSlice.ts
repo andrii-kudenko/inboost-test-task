@@ -25,8 +25,11 @@ export const nodesSlice = createSlice({
                 // do not touch position
             }
         },
+        deleteNode: (state, action: PayloadAction<string>) => {
+            return state.filter((node) => node.id !== action.payload);
+        },
     },
 });
 
-export const { setNodes, addNode, updateNode } = nodesSlice.actions;
+export const { setNodes, addNode, updateNode, deleteNode } = nodesSlice.actions;
 export default nodesSlice.reducer;

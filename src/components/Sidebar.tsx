@@ -2,6 +2,8 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { updateNode } from "../store/nodesSlice";
 import { selectNode } from "../store/uiSlice";
 import { useEffect, useState } from "react";
+import { deleteNode } from "../store/nodesSlice";
+import { removeEdgesForNode } from "../store/edgesSlice";
 
 const Sidebar = () => {
     const dispatch = useAppDispatch();
@@ -89,6 +91,16 @@ const Sidebar = () => {
                 className="ml-2 bg-white  text-gray-400 px-4 py-1 rounded hover:bg-gray-700 border border-gray-300 hover:text-white"
             >
                 Close
+            </button>
+            <button
+                onClick={() => {
+                    dispatch(deleteNode(node.id));
+                    dispatch(removeEdgesForNode(node.id));
+                    dispatch(selectNode(null));
+                }}
+                className="block text-sm text-red-500 hover:underline mt-2 w-full text-center"
+            >
+                Delete Node
             </button>
         </div>
     );
