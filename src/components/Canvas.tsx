@@ -19,6 +19,8 @@ import { setEdges } from "../store/edgesSlice";
 import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 import TaskNode from "./TaskNode";
+import { selectNode } from "../store/uiSlice";
+import Sidebar from "./Sidebar";
 
 const nodeTypes = {
     task: TaskNode,
@@ -58,6 +60,7 @@ const Canvas = () => {
                     + Add Task
                 </button>
             </div>
+            <Sidebar />
             <ReactFlow
                 nodeTypes={nodeTypes}
                 nodes={nodes}
@@ -74,6 +77,7 @@ const Canvas = () => {
                     const newEdge = addEdge(connection, edges);
                     dispatch(setEdges(newEdge));
                 }}
+                onNodeClick={(_, node) => dispatch(selectNode(node.id))}
                 fitView
             >
                 <MiniMap />
