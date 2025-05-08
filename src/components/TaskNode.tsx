@@ -55,12 +55,26 @@ const TaskNode = memo(({ id, data }: NodeProps) => {
                     onKeyDown={handleKeyDown}
                 />
             ) : (
-                <div
-                    onClick={handleDoubleClick}
-                    className="cursor-pointer text-center px-1 py-0.5"
-                >
-                    {data.label}
-                </div>
+                <>
+                    <div
+                        onClick={handleDoubleClick}
+                        className="cursor-pointer text-center px-1 py-0.5"
+                    >
+                        {data.label}
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">
+                        {data.description}
+                    </div>
+                    <div
+                        className={`text-xs mt-1 ${
+                            data.isCompleted
+                                ? "text-green-600"
+                                : "text-gray-400"
+                        }`}
+                    >
+                        {data.isCompleted ? "✅ Completed" : "⏳ In progress"}
+                    </div>
+                </>
             )}
 
             <Handle type="target" position={Position.Top} />

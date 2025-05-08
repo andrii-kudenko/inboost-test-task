@@ -10,12 +10,26 @@ const Sidebar = () => {
         state.nodes.find((node) => node.id === selectedNodeId)
     );
     const [label, setLabel] = useState("");
+    const [description, setDescription] = useState("");
+    const [isCompleted, setIsCompleted] = useState(false);
 
     useEffect(() => {
         if (node) {
-            setLabel(node.data.label);
+            setLabel(node.data.label || "");
+            setDescription(node.data.description || "");
+            setIsCompleted(node.data.isCompleted || false);
         }
     }, [node]);
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "Escape") {
+                dispatch(selectNode(null));
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+    }, [dispatch]);
 
     if (!node) {
         return null;
@@ -28,6 +42,8 @@ const Sidebar = () => {
                 data: {
                     ...node.data,
                     label,
+                    description,
+                    isCompleted,
                 },
             })
         );
@@ -44,15 +60,33 @@ const Sidebar = () => {
                 value={label}
                 onChange={(e) => setLabel(e.target.value)}
             />
+            <label className="block mb-2 text-sm font-medium">
+                Description:
+            </label>
+            <textarea
+                className="w-full border px-2 py-1 rounded mb-4 text-gray-700"
+                rows={3}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+            />
+            <label className="flex items-center mb-4 text-sm text-gray-700">
+                <input
+                    type="checkbox"
+                    className="mr-2"
+                    checked={isCompleted}
+                    onChange={(e) => setIsCompleted(e.target.checked)}
+                />
+                Mark as completed
+            </label>
             <button
                 onClick={handleSave}
-                className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700"
+                className="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-700"
             >
                 Save
             </button>
             <button
                 onClick={() => dispatch(selectNode(null))}
-                className="ml-2 text-sm text-gray-500 hover:underline"
+                className="ml-2 bg-white  text-gray-400 px-4 py-1 rounded hover:bg-gray-700 border border-gray-300 hover:text-white"
             >
                 Close
             </button>

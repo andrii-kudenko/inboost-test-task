@@ -21,12 +21,14 @@ import { connect } from "react-redux";
 import TaskNode from "./TaskNode";
 import { selectNode } from "../store/uiSlice";
 import Sidebar from "./Sidebar";
+import { useLocalStorageSync } from "../hooks/useLocalStorageSync";
 
 const nodeTypes = {
     task: TaskNode,
 };
 
 const Canvas = () => {
+    useLocalStorageSync(); // Sync with local storage
     const nodes = useAppSelector((state) => state.nodes);
     const edges = useAppSelector((state) => state.edges);
     const dispatch = useAppDispatch();
@@ -44,6 +46,8 @@ const Canvas = () => {
             data: {
                 label: `Node ${nodes.length + 1}`,
                 position: { x: x, y: y },
+                description: "Describe this task",
+                isCompleted: false,
             },
         };
         console.log("Adding new node:", newNode);
@@ -55,7 +59,7 @@ const Canvas = () => {
             <div className="absolute top-4 left-4 z-10">
                 <button
                     onClick={handleAddNode}
-                    className="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition"
+                    className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700 transition"
                 >
                     + Add Task
                 </button>
