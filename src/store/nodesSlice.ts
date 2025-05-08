@@ -8,13 +8,22 @@ export const nodesSlice = createSlice({
     name: "nodes",
     initialState,
     reducers: {
-        setNodes: (_, action: PayloadAction<Node[]>) => action.payload,
+        setNodes: (_, action: PayloadAction<Node[]>) => {
+            console.log("Updated node state:", action.payload);
+            return action.payload;
+        },
         addNode: (state, action: PayloadAction<Node>) => {
             state.push(action.payload);
         },
         updateNode: (state, action: PayloadAction<Node>) => {
             const index = state.findIndex((n) => n.id === action.payload.id);
-            if (index !== -1) state[index] = action.payload;
+            if (index !== -1) {
+                state[index].data = {
+                    ...state[index].data,
+                    ...action.payload.data,
+                };
+                // do not touch position
+            }
         },
     },
 });

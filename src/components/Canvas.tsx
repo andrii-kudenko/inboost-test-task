@@ -7,6 +7,8 @@ import ReactFlow, {
     type OnConnect,
     addEdge,
     type Node,
+    type Connection,
+    type Edge,
     applyNodeChanges,
     applyEdgeChanges,
 } from "reactflow";
@@ -15,6 +17,12 @@ import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addNode, setNodes } from "../store/nodesSlice";
 import { setEdges } from "../store/edgesSlice";
 import { v4 as uuidv4 } from "uuid";
+import { connect } from "react-redux";
+import TaskNode from "./TaskNode";
+
+const nodeTypes = {
+    task: TaskNode,
+};
 
 const Canvas = () => {
     const nodes = useAppSelector((state) => state.nodes);
@@ -22,14 +30,19 @@ const Canvas = () => {
     const dispatch = useAppDispatch();
 
     const handleAddNode = () => {
+        var x = Math.round(Math.random() * 300);
+        var y = Math.round(Math.random() * 300);
         const newNode: Node = {
             id: uuidv4(),
-            type: "default",
+            type: "task",
             position: {
-                x: Math.round(Math.random() * 100),
-                y: Math.round(Math.random() * 100),
+                x: x,
+                y: y,
             },
-            data: { label: `Node ${nodes.length + 1}` },
+            data: {
+                label: `Node ${nodes.length + 1}`,
+                position: { x: x, y: y },
+            },
         };
         console.log("Adding new node:", newNode);
         dispatch(addNode(newNode));
@@ -46,14 +59,21 @@ const Canvas = () => {
                 </button>
             </div>
             <ReactFlow
+                nodeTypes={nodeTypes}
                 nodes={nodes}
                 edges={edges}
-                onNodesChange={(changes) =>
-                    dispatch(setNodes(applyNodeChanges(changes, nodes)))
-                } // We'll refine this
+                onNodesChange={(changes) => {
+                    console.log("Node changes:", changes);
+                    console.log("Current nodes:", nodes);
+                    dispatch(setNodes(applyNodeChanges(changes, nodes)));
+                }} // We'll refine this
                 onEdgesChange={(changes) =>
                     dispatch(setEdges(applyEdgeChanges(changes, edges)))
                 } // We'll refine this
+                onConnect={(connection: Connection) => {
+                    const newEdge = addEdge(connection, edges);
+                    dispatch(setEdges(newEdge));
+                }}
                 fitView
             >
                 <MiniMap />
